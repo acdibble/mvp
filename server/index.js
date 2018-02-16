@@ -9,11 +9,20 @@ app.use(express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.json());
 
 
-app.get('/search', function (req, res) {
+app.get('/search', (req, res) => {
   const query = req.query.q;
-  youtube.search(query).then((data => {
-    res.send(data.data)
-  }))
+
+  youtube.search(query).then(data => {
+    res.send(data.data);
+  });
 });
+
+app.post('/fetch', (req, res) => {
+  const query = req.body.q;
+
+  youtube.search(query).then(data => {
+    res.send(data.data);
+  });
+})
 
 app.listen(port);

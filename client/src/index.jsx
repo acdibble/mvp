@@ -32,15 +32,34 @@ class App extends React.Component {
     });
   }
 
+  fetchVideos() {
+    axios.post('/fetch', { q: this.state.searchQuery })
+      .then((res) => {
+        this.setState({
+          videos: res.data.items
+        });
+      });
+  }
+
   render () {
     return (
       <div>
         <h1>Welcome to uMTV</h1>
-        <input
+        <div>
+          <input
           type="text"
+          name="searchBar"
           value={this.state.searchQuery}
           onChange={this.updateSeachQuery.bind(this)}
-        />
+          />
+          <button
+            name="search"
+            value="search"
+            onClick={this.fetchVideos.bind(this)}
+          >
+            Search
+          </button>
+        </div>
       </div>
     );
   }
