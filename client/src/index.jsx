@@ -9,7 +9,8 @@ class App extends React.Component {
     this.state = { 
       videos: [],
       currentVideo: null,
-      searchQuery: ''
+      searchQuery: '',
+      globalQueue: []
     }
   }
 
@@ -41,6 +42,10 @@ class App extends React.Component {
       });
   }
 
+  videoEntryClickHandler(e) {
+    axios.post('/addtoqueue', { id: e.target.id });
+  }
+
   render () {
     return (
       <div>
@@ -59,7 +64,10 @@ class App extends React.Component {
           >
             Search
           </button>
-          <List videos={this.state.videos} />
+          <List
+            videos={this.state.videos}
+            clickHandler={this.videoEntryClickHandler.bind(this)}
+          />
         </div>
       </div>
     );

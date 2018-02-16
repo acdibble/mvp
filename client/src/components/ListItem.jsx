@@ -1,7 +1,10 @@
 import React from 'react';
 
 const ListItem = (props) => (
-  <div>
+  <div
+    id={props.id}
+    onClick={props.clickHandler}
+  >
     { props.video.snippet.title }
   </div>
 )
