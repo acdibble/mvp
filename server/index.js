@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const youtube = require('../helpers/youtube')
 
 const port = process.env.PORT || 3000;
 
@@ -8,8 +9,11 @@ app.use(express.static(__dirname + '/../client/dist'));
 app.use(bodyParser.json());
 
 
-app.get('/items', function (req, res) {
-  // TODO
+app.get('/search', function (req, res) {
+  const query = req.query.q;
+  youtube.search(query).then((data => {
+    res.send(data.data)
+  }))
 });
 
 app.listen(port);

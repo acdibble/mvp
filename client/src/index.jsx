@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import List from './components/List.jsx';
+import axios from 'axios';
 
 class App extends React.Component {
   constructor(props) {
@@ -12,15 +13,23 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    // TODO
+    axios.get('/search', {
+      params: {
+        q: 'Bob Seger'
+      }
+    })
+      .then((res) => {
+        this.setState({
+          videos: res.data.items
+      });
+    });
   }
 
   render () {
     return (
-      // TODO
-      <div />
+      <h1>Welcome to uMTV</h1>
     )
   }
-}
+};
 
 ReactDOM.render(<App />, document.getElementById('app'));
