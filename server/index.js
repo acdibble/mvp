@@ -1,5 +1,5 @@
-import express from 'express';
-import bodyParser from 'body-parser';
+const express = require('express');
+const bodyParser = require('body-parser');
 
 const port = process.env.PORT || 3000;
 
@@ -12,7 +12,4 @@ app.get('/items', function (req, res) {
   // TODO
 });
 
-app.listen(port, function() {
-  console.log('listening on port 3000!');
-});
-
+app.listen(port);
