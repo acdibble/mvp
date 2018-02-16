@@ -8,7 +8,8 @@ class App extends React.Component {
     super(props);
     this.state = { 
       videos: [],
-      currentVideo: null
+      currentVideo: null,
+      searchQuery: ''
     }
   }
 
@@ -25,10 +26,23 @@ class App extends React.Component {
     });
   }
 
+  updateSeachQuery(e) {
+    this.setState({
+      searchQuery: e.target.value
+    });
+  }
+
   render () {
     return (
-      <h1>Welcome to uMTV</h1>
-    )
+      <div>
+        <h1>Welcome to uMTV</h1>
+        <input
+          type="text"
+          value={this.state.searchQuery}
+          onChange={this.updateSeachQuery.bind(this)}
+        />
+      </div>
+    );
   }
 };
 
