@@ -9,39 +9,31 @@ class App extends React.Component {
     this.state = { 
       videos: [],
       currentVideo: null,
-      searchQuery: '',
+      searchQuery: 'Bob Seger',
       globalQueue: [],
       addById: ''
     }
   }
 
   componentDidMount() {
-    axios.get('/search', {
-      params: {
-        q: 'Bob Seger'
-      }
+    this.fetchVideos();
+    this.setState({
+      searchQuery: ''
     })
-      .then((res) => {
-        this.setState({
-          videos: res.data.items
-      });
-    });
   }
 
-  updateSeachQuery(e) {
+  handleChange(e) {
     this.setState({
-      searchQuery: e.target.value
-    });
-  }
-
-  updateAddById(e) {
-    this.setState({
-      addById: e.target.value
+      [e.target.name]: e.target.value
     });
   }
 
   fetchVideos() {
-    axios.post('/fetch', { q: this.state.searchQuery })
+    axios.get('/search', {
+      params: {
+        q: this.state.searchQuery
+      }
+    })
       .then((res) => {
         this.setState({
           videos: res.data.items
@@ -55,19 +47,29 @@ class App extends React.Component {
     })
   }
 
+  enterKeyHandler(e) {
+    if (e.key === 'Enter') {
+      if (e.target.name === 'addById') {
+        // TODO
+      } else if (e.target.name === 'searchQuery') {
+        this.fetchVideos();
+      }
+    }
+  }
+
   render () {
     return (
       <div>
         <h1>Welcome to uMTV</h1>
         <div>
           <input
-          type="text"
-          name="searchBar"
-          value={this.state.searchQuery}
-          onChange={this.updateSeachQuery.bind(this)}
+            type="text"
+            name="searchQuery"
+            value={this.state.searchQuery}
+            onChange={this.handleChange.bind(this)}
+            onKeyPress={this.enterKeyHandler.bind(this)}
           />
           <button
-            name="search"
             onClick={this.fetchVideos.bind(this)}
           >
             Search
@@ -76,13 +78,12 @@ class App extends React.Component {
         <div>
           <input
             type="text"
-            name="addByIdBar"
+            name="addById"
             value={this.state.addById}
-            onChange={this.updateAddById.bind(this)}
+            onChange={this.handleChange.bind(this)}
+            onKeyPress={this.enterKeyHandler.bind(this)}
           />
           <button
-            name="addById"
-            onClick={this.fetchVideos.bind(this)}
           >
             Add Video By ID
           </button>

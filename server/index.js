@@ -17,12 +17,4 @@ app.get('/search', (req, res) => {
   });
 });
 
-app.post('/fetch', (req, res) => {
-  const query = req.body.q;
-
-  youtube.search(query).then(data => {
-    res.send(data.data);
-  });
-})
-
 app.listen(port);
