@@ -1,22 +1,29 @@
 const mongoose = require('mongoose');
 const MLAB_URI = require('./config');
-const autoIncrement = require('mongoose-auto-increment');
 
-const connection = mongoose.createConnection(MLAB_URI || 'mongodb://localhost/videos');
-autoIncrement.initialize(connection);
+mongoose.connect(MLAB_URI || 'mongodb://localhost/videos');
 
-const videoSchema = new Schema({
-  id: { type: Number, required: true, unique: true },
+const videoSchema = mongoose.Schema({
+  id: { type: String, required: true, unique: true },
   title: String,
+  tUrl: String
 });
-videoSchema.plugin(autoIncrement.plugin, 'Video')
 
-const Video = connection.model('Video', videoSchema);
+const Video = mongoose.model('Video', videoSchema);
 
 const save = (params) => {
-  // TODO
+  const { id, title, tUrl } = params;
+  
+  new Video({
+    id: id,
+    title: title,
+    tUrl: tUrl
+  })
+    .save(err => {
+    if (err) console.log(err);
+  });
 }
 
 module.exports = {
-
+  save: save
 }
