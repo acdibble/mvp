@@ -10,7 +10,8 @@ class App extends React.Component {
       videos: [],
       currentVideo: null,
       searchQuery: '',
-      globalQueue: []
+      globalQueue: [],
+      addById: ''
     }
   }
 
@@ -33,6 +34,12 @@ class App extends React.Component {
     });
   }
 
+  updateAddById(e) {
+    this.setState({
+      addById: e.target.value
+    });
+  }
+
   fetchVideos() {
     axios.post('/fetch', { q: this.state.searchQuery })
       .then((res) => {
@@ -43,7 +50,9 @@ class App extends React.Component {
   }
 
   videoEntryClickHandler(e) {
-    axios.post('/addtoqueue', { id: e.target.id });
+    this.setState({
+      addById: e.target.id
+    })
   }
 
   render () {
@@ -59,11 +68,26 @@ class App extends React.Component {
           />
           <button
             name="search"
-            value="search"
             onClick={this.fetchVideos.bind(this)}
           >
             Search
           </button>
+        </div>
+        <div>
+          <input
+            type="text"
+            name="addByIdBar"
+            value={this.state.addById}
+            onChange={this.updateAddById.bind(this)}
+          />
+          <button
+            name="addById"
+            onClick={this.fetchVideos.bind(this)}
+          >
+            Add Video By ID
+          </button>
+        </div>
+        <div>
           <List
             videos={this.state.videos}
             clickHandler={this.videoEntryClickHandler.bind(this)}
