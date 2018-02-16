@@ -5,7 +5,7 @@ const ListItem = (props) => (
     id={props.id}
     onClick={props.clickHandler}
   >
-    { props.video.snippet.title }
+    <img src={props.video.snippet.thumbnails.default.url} />{ props.video.snippet.title }
   </div>
 )
 
