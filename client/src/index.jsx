@@ -42,6 +42,17 @@ class App extends React.Component {
     });
   }
 
+  addToQueue() {
+    axios.post('/add', { video: this.state.selected })
+      .then(res => {
+        const queue = this.state.globalQueue.slice();
+        queue.push(res.data);
+        this.setState({
+          globalQueue: queue
+        });
+    });
+  }
+
   videoEntryClickHandler(e) {
     let selected = null;
 

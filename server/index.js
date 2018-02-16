@@ -17,4 +17,9 @@ app.get('/search', (req, res) => {
   });
 });
 
+app.post('/add', (req, res) => {
+  const video = req.body.video;
+  res.send(video);
+})
+
 app.listen(port);
