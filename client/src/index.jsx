@@ -11,6 +11,7 @@ class App extends React.Component {
       currentVideo: null,
       searchQuery: 'Bob Seger',
       globalQueue: [],
+      selected: null,
       addById: ''
     }
   }
@@ -38,11 +39,22 @@ class App extends React.Component {
         this.setState({
           videos: res.data.items
         });
-      });
+    });
   }
 
   videoEntryClickHandler(e) {
+    let selected = null;
+
+    while (selected === null) {
+      for (const video of this.state.videos) {
+        if (video.id.videoId === e.target.id) {
+          selected = video;
+        }
+      }
+    }
+
     this.setState({
+      selected: selected,
       addById: e.target.id
     })
   }
@@ -50,7 +62,7 @@ class App extends React.Component {
   enterKeyHandler(e) {
     if (e.key === 'Enter') {
       if (e.target.name === 'addById') {
-        // TODO
+        this.addToQueue();
       } else if (e.target.name === 'searchQuery') {
         this.fetchVideos();
       }
@@ -84,6 +96,7 @@ class App extends React.Component {
             onKeyPress={this.enterKeyHandler.bind(this)}
           />
           <button
+            onClick={this.addToQueue.bind(this)}
           >
             Add Video By ID
           </button>
