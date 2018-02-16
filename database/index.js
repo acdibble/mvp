@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/videos');
+import { MLAB_URI } from './config';
+
+mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/videos');
 
 module.exports = {
 
