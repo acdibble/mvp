@@ -84,7 +84,6 @@ class App extends React.Component {
     for (const video of this.state.videos) {
        if (video.id.videoId === e.target.id) {
         selected = video;
-        break
       }
     }
 
@@ -105,6 +104,12 @@ class App extends React.Component {
   }
 
   render () {
+    const styles = {
+      queueList: {
+        'float': 'right'
+      },
+    }
+
     return (
       <div>
         <h1>Welcome to uMTV</h1>
@@ -126,7 +131,10 @@ class App extends React.Component {
             Add Video By ID
           </button>
         </div>
-        <div name="queueList">
+        <div
+        name="queueList"
+        style={styles.queueList}
+        >
           <List
             videos={this.state.globalQueue}
             queue
