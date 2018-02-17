@@ -22,7 +22,7 @@ app.post('/add', (req, res) => {
   const params = {
     id: req.body.video.id.videoId,
     title: req.body.video.snippet.title,
-    tUrls: req.body.video.snippet.thumbnails.default.url
+    tUrl: req.body.video.snippet.thumbnails.default.url
   }
 
   db.save(params);
