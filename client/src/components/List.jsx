@@ -32,7 +32,6 @@ const List = (props) => {
       {count && `There are ${ videos.length } videos.`}
       { videos.map(video =>
         <ListItem
-          key={video.id.videoId}
           id={video.id.videoId}
           video={video}
           clickHandler={clickHandler}
