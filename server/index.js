@@ -25,8 +25,12 @@ app.post('/add', (req, res) => {
     tUrl: req.body.video.snippet.thumbnails.default.url
   }
 
-  db.save(params);
-  res.send(req.body.video);
+  db.save(params, (err, product) => {
+    if (err) {
+      res.send(err);
+    }
+    res.send(product)
+  });
 })
 
 app.listen(port);

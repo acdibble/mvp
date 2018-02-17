@@ -3,7 +3,7 @@ const MLAB_URI = require('./config');
 
 mongoose.connect(MLAB_URI || 'mongodb://localhost/videos');
 
-const videoSchema = mongoose.Schema({
+const videoSchema = mongoose.Schema({  
   id: { type: String, required: true, unique: true },
   title: String,
   tUrl: String
@@ -11,7 +11,7 @@ const videoSchema = mongoose.Schema({
 
 const Video = mongoose.model('Video', videoSchema);
 
-const save = (params) => {
+const save = (params, callback) => {
   const { id, title, tUrl } = params;
   
   new Video({
@@ -19,8 +19,11 @@ const save = (params) => {
     title: title,
     tUrl: tUrl
   })
-    .save(err => {
-    if (err) console.log(err);
+    .save((err, product) => {
+    if (err) {
+      callback(err, null); 
+    }
+    callback(null, product);
   });
 }
 
