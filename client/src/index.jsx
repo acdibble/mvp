@@ -13,9 +13,15 @@ class App extends React.Component {
       searchQuery: 'Bob Seger',
       selected: null,
       addById: '',
-      globalQueue: [],
-      playing: null,
-      url: null
+      globalQueue: [
+        
+      ],
+      playing: {
+        'id': '-xKM3mGt2pE',
+        'title': 'a-ha - Take On Me [ Live From MTV Unplugged, Giske / 2017 ]',
+        'turl': 'https://i.ytimg.com/vi/O3rXmViAcHc/default.jpg'
+      },
+      url: 'https://www.youtube.com/embed/-xKM3mGt2pE?disablekb=1&enablejsapi=1&playsinline=1'
     }
   }
 
@@ -73,13 +79,12 @@ class App extends React.Component {
   }
 
   videoEntryClickHandler(e) {
-    let selected = null;
+    let selected;
 
-    while (selected === null) {
-      for (const video of this.state.videos) {
-        if (video.id.videoId === e.target.id) {
-          selected = video;
-        }
+    for (const video of this.state.videos) {
+       if (video.id.videoId === e.target.id) {
+        selected = video;
+        break
       }
     }
 
@@ -103,22 +108,10 @@ class App extends React.Component {
     return (
       <div>
         <h1>Welcome to uMTV</h1>
-        <div>
-          <input
-            type="text"
-            name="searchQuery"
-            value={this.state.searchQuery}
-            onChange={this.handleChange.bind(this)}
-            onKeyPress={this.enterKeyHandler.bind(this)}
-          />
-          <button
-            onClick={this.fetchVideos.bind(this)}
-          >
-            Search
-          </button>
+        <div name="videoplayer">
           <VideoPlayer url={this.state.url} />
         </div>
-        <div>
+        <div name="addByIdBox">
           <input
             type="text"
             name="addById"
@@ -133,7 +126,28 @@ class App extends React.Component {
             Add Video By ID
           </button>
         </div>
-        <div>
+        <div name="queueList">
+          <List
+            videos={this.state.globalQueue}
+            queue
+            count
+          />
+        </div>
+        <div name="searchBox">
+          <input
+            type="text"
+            name="searchQuery"
+            value={this.state.searchQuery}
+            onChange={this.handleChange.bind(this)}
+            onKeyPress={this.enterKeyHandler.bind(this)}
+          />
+          <button
+            onClick={this.fetchVideos.bind(this)}
+          >
+            Search
+          </button>
+        </div>
+        <div name="searchList">
           <List
             videos={this.state.videos}
             clickHandler={this.videoEntryClickHandler.bind(this)}
