@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import List from './components/List.jsx';
 import axios from 'axios';
+import VideoPlayer from './components/VideoPlayer.jsx';
 
 class App extends React.Component {
   constructor(props) {
@@ -112,6 +113,7 @@ class App extends React.Component {
           >
             Search
           </button>
+          <VideoPlayer playing={this.state.playing} />
         </div>
         <div>
           <input
