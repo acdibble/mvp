@@ -30,27 +30,31 @@ class App extends React.Component {
   }
 
   fetchVideos() {
-    axios.get('/search', {
-      params: {
-        q: this.state.searchQuery
-      }
-    })
-      .then((res) => {
-        this.setState({
-          videos: res.data.items
-        });
-    });
+    if (this.state.searchQuery !== '') {
+      axios.get('/search', {
+        params: {
+          q: this.state.searchQuery
+        }
+      })
+        .then((res) => {
+          this.setState({
+            videos: res.data.items
+          });
+      });
+    }
   }
 
   addToQueue() {
-    axios.post('/add', { video: this.state.selected })
-      .then(res => {
-        const queue = this.state.globalQueue.slice();
-        queue.push(res.data);
-        this.setState({
-          globalQueue: queue
-        });
-    });
+    if (this.state.addById !== '') {
+      axios.post('/add', { video: this.state.selected })
+        .then(res => {
+          const queue = this.state.globalQueue.slice();
+          queue.push(res.data);
+          this.setState({
+            globalQueue: queue
+          });
+      });
+    }
   }
 
   videoEntryClickHandler(e) {
