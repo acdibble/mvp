@@ -23,13 +23,7 @@ class App extends React.Component {
       searchQuery: ''
     })
   }
-
-  handleChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  }
-
+  
   fetchVideos() {
     if (this.state.searchQuery !== '') {
       axios.get('/search', {
@@ -41,19 +35,19 @@ class App extends React.Component {
           this.setState({
             videos: res.data.items
           });
-      });
+        });
+      }
     }
-  }
-
+    
   addToQueue() {
     if (this.state.addById !== '') {
       axios.post('/add', { video: this.state.selected })
-        .then(res => {
-          if (res.data === 'already exists') {
-            alert('This song cannot be played as it already has been played recently');
-          } else {
-            if (this.state.playing === null) {
-              this.setState({
+      .then(res => {
+        if (res.data === 'already exists') {
+          alert('This song cannot be played as it already has been played recently');
+        } else {
+          if (this.state.playing === null) {
+            this.setState({
                 playing: res.data
               });
             } else {
@@ -66,6 +60,12 @@ class App extends React.Component {
           }
       });
     }
+  }
+  
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
   }
 
   videoEntryClickHandler(e) {
