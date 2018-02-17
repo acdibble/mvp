@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const MLAB_URI = require('./config');
+const config = require('../config');
 
-mongoose.connect(MLAB_URI || 'mongodb://localhost/videos');
+mongoose.connect(config.MLAB_URI);
 
 const videoSchema = mongoose.Schema({  
   id: { type: String, required: true, unique: true },

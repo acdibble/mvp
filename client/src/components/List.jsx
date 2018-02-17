@@ -4,13 +4,32 @@ import ListItem from './ListItem.jsx';
 const List = (props) => {
   const {
     videos,
-    clickHandler
+    clickHandler,
+    count,
+    queue
   } = props;
+
+  if (queue) {
+    for (const video of videos) {
+      let temp = video.id;
+      delete video.id;
+      video.id = {
+        videoId: temp
+      }
+      video.snippet = {
+        thumbnails: {
+          default: {
+            url: video.tUrl
+          }
+        },
+        title: video.title
+      }
+    }
+  }
 
   return (
     <div>
-      <h4> List Component </h4>
-      There are { videos.length } videos.
+      {count && `There are ${ videos.length } videos.`}
       { videos.map(video =>
         <ListItem
           key={video.id.videoId}
