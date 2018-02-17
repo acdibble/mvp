@@ -10,9 +10,10 @@ class App extends React.Component {
       videos: [],
       currentVideo: null,
       searchQuery: 'Bob Seger',
-      globalQueue: [],
       selected: null,
-      addById: ''
+      addById: '',
+      globalQueue: [],
+      playing: null
     }
   }
 
@@ -48,11 +49,21 @@ class App extends React.Component {
     if (this.state.addById !== '') {
       axios.post('/add', { video: this.state.selected })
         .then(res => {
-          const queue = this.state.globalQueue.slice();
-          queue.push(res.data);
-          this.setState({
-            globalQueue: queue
-          });
+          if (res.data === 'already exists') {
+            alert('This song cannot be played as it already has been played recently');
+          } else {
+            if (this.state.playing === null) {
+              this.setState({
+                playing: res.data
+              });
+            } else {
+              const queue = this.state.globalQueue.slice();
+              queue.push(res.data);
+              this.setState({
+                globalQueue: queue
+              });
+            }
+          }
       });
     }
   }

@@ -27,9 +27,10 @@ app.post('/add', (req, res) => {
 
   db.save(params, (err, product) => {
     if (err) {
-      res.send(err);
+      res.send('already exists');
+    } else {
+      res.send(product)
     }
-    res.send(product)
   });
 })
 
