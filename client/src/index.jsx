@@ -14,7 +14,8 @@ class App extends React.Component {
       selected: null,
       addById: '',
       globalQueue: [],
-      playing: null
+      playing: null,
+      url: null
     }
   }
 
@@ -48,8 +49,10 @@ class App extends React.Component {
           alert('This song cannot be played as it already has been played recently');
         } else {
           if (this.state.playing === null) {
+            const url = `https://www.youtube.com/embed/${res.data.id}?disablekb=1&enablejsapi=1&playsinline=1`
             this.setState({
-                playing: res.data
+                playing: res.data,
+                url: url
               });
             } else {
               const queue = this.state.globalQueue.slice();
@@ -113,7 +116,7 @@ class App extends React.Component {
           >
             Search
           </button>
-          <VideoPlayer playing={this.state.playing} />
+          <VideoPlayer url={this.state.url} />
         </div>
         <div>
           <input
@@ -122,6 +125,7 @@ class App extends React.Component {
             value={this.state.addById}
             onChange={this.handleChange.bind(this)}
             onKeyPress={this.enterKeyHandler.bind(this)}
+            disabled
           />
           <button
             onClick={this.addToQueue.bind(this)}

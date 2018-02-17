@@ -1,45 +1,22 @@
 import React from 'react';
-import YouTube from 'react-youtube';
 
-class VideoPlayer extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      playing: this.props.playing
-    }
-  }
-
-  render() {
-    const opts = {
-      height: '390',
-      width: '640',
-      playerVars: { // https://developers.google.com/youtube/player_parameters
-        autoplay: 1
-      }
-    };
-
+const VideoPlayer = (props) => {
     return (
       <div>
-        {this.props.playing ? (
-          <YouTube
-            videoId={this.state.playing}
-            opts={opts}
-            onReady={this._onReady}
+        {props.url ? (
+          <iframe
+            id="ytplayer"
+            type="text/html"
+            width="720"
+            height="405"
+            src={props.url}
+            frameBorder="0"
           />
         ) : (
           <h2>waiting for video...</h2>
         )}
-      </div>
+        </div>
     );
-
-    
-  }
-
-  _onReady(event) {
-    // access to player in all event handlers via event.target
-    event.target.pauseVideo();
-  }
 }
 
 export default VideoPlayer;
