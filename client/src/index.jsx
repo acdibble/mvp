@@ -21,7 +21,7 @@ class App extends React.Component {
         'title': 'a-ha - Take On Me [ Live From MTV Unplugged, Giske / 2017 ]',
         'turl': 'https://i.ytimg.com/vi/O3rXmViAcHc/default.jpg'
       },
-      url: 'https://www.youtube.com/embed/-xKM3mGt2pE?disablekb=1&enablejsapi=1&playsinline=1'
+      url: 'https://www.youtube.com/embed/-xKM3mGt2pE'
     }
   }
 
@@ -55,7 +55,7 @@ class App extends React.Component {
           alert('This song cannot be played as it already has been played recently');
         } else {
           if (this.state.playing === null) {
-            const url = `https://www.youtube.com/embed/${res.data.id}?disablekb=1&enablejsapi=1&playsinline=1`
+            const url = `https://www.youtube.com/embed/${res.data.id}`
             this.setState({
                 playing: res.data,
                 url: url
@@ -103,6 +103,23 @@ class App extends React.Component {
     }
   }
 
+  handleEnd() {
+    const queue = this.state.globalQueue.slice();
+    if (!queue.length) {
+      this.setState({
+        playing: null,
+        url: null
+      });
+    } else {
+      const playing = queue.pop();
+      this.setState({
+        playing: playing,
+        url: `https://www.youtube.com/embed/${playing.id.videoId}`,
+        globalQueue: queue
+      })
+    }
+  }
+
   render () {
     const styles = {
       queueList: {
@@ -114,7 +131,10 @@ class App extends React.Component {
       <div>
         <h1>Welcome to uMTV</h1>
         <div name="videoplayer">
-          <VideoPlayer url={this.state.url} />
+          <VideoPlayer
+            url={this.state.url}
+            end={this.handleEnd.bind(this)}
+          />
         </div>
         <div name="addByIdBox">
           <input
