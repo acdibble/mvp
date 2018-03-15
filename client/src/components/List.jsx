@@ -30,7 +30,7 @@ const List = (props) => {
   return (
     <div>
       {count && `There are ${videos.length} videos.`}
-      { videos.map(video =>
+      {videos.map(video =>
         (<ListItem
           id={video.id.videoId}
           video={video}
