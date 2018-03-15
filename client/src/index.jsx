@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 
-import { Button, FormControl, FormGroup, Navbar } from 'react-bootstrap';
+import { Button, Col, FormControl, FormGroup, Grid, Navbar, Row } from 'react-bootstrap';
 
 import List from './components/List.jsx';
 import VideoPlayer from './components/VideoPlayer.jsx';
@@ -126,12 +126,6 @@ class App extends React.Component {
   }
 
   render() {
-    const styles = {
-      queueList: {
-        float: 'right',
-      },
-    };
-
     return (
       <div>
         <Navbar>
@@ -151,7 +145,7 @@ class App extends React.Component {
                   onChange={this.handleChange}
                   onKeyPress={this.enterKeyHandler}
                 />
-              </FormGroup>{' '}
+              </FormGroup>
               <Button
                 type="submit"
                 onClick={this.fetchVideos}
@@ -161,44 +155,54 @@ class App extends React.Component {
             </Navbar.Form>
           </Navbar.Collapse>
         </Navbar>
-        <div name="videoplayer">
-          <VideoPlayer
-            url={this.state.url}
-            end={this.handleEnd}
-          />
-        </div>
-        <div name="addByIdBox">
-          <input
-            type="text"
-            name="addById"
-            value={this.state.addById}
-            onChange={this.handleChange}
-            onKeyPress={this.enterKeyHandler}
-            disabled
-          />
-          <button
-            onClick={this.addToQueue}
-          >
-            Add Video By ID
-          </button>
-        </div>
-        <div
-          name="queueList"
-          style={styles.queueList}
-        >
-          <List
-            videos={this.state.globalQueue}
-            queue
-            count
-          />
-        </div>
+        <Grid>
+          <Row>
+            <Col name="videoplayer" xs={12} md={8}>
+              <VideoPlayer
+                url={this.state.url}
+                end={this.handleEnd}
+              />
+              <div
+                bsStyle="pull-left"
+                name="queueList"
+              >
+                <List
+                  videos={this.state.globalQueue}
+                  queue
+                  count
+                />
+              </div>
+            </Col>
+            <Col xs={6} md={4}>
+              <div name="addByIdBox">
+                <input
+                  type="text"
+                  name="addById"
+                  value={this.state.addById}
+                  onChange={this.handleChange}
+                  onKeyPress={this.enterKeyHandler}
+                  disabled
+                />
+                <button
+                  onClick={this.addToQueue}
+                >
+                  Add Video By ID
+                </button>
+              </div>
+              <div name="searchList">
+                <List
+                  videos={this.state.videos}
+                  clickHandler={this.videoEntryClickHandler}
+                />
+              </div>
 
-        <div name="searchList">
-          <List
-            videos={this.state.videos}
-            clickHandler={this.videoEntryClickHandler}
-          />
-        </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col name="videoplayer" xs={12} md={8} />
+          </Row>
+
+        </Grid>
       </div>
     );
   }
