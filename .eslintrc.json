@@ -1,0 +1,13 @@
+{
+    "extends": "airbnb",
+    "globals": {
+        "document": true,
+        "window": true
+    },
+    "rules": {
+        "import/extensions": "off",
+        "react/prop-types": "off",
+        "no-param-reassign": "off",
+        "jsx-a11y/anchor-is-valid": "off"
+    }
+}

@@ -6,39 +6,38 @@ const List = (props) => {
     videos,
     clickHandler,
     count,
-    queue
+    queue,
   } = props;
 
   if (queue) {
-    for (const video of videos) {
-      let temp = video.id;
+    videos.forEach((video) => {
+      const temp = video.id;
       delete video.id;
       video.id = {
-        videoId: temp
-      }
+        videoId: temp,
+      };
       video.snippet = {
         thumbnails: {
           default: {
-            url: video.tUrl
-          }
+            url: video.tUrl,
+          },
         },
-        title: video.title
-      }
-    }
+        title: video.title,
+      };
+    });
   }
 
   return (
     <div>
-      {count && `There are ${ videos.length } videos.`}
+      {count && `There are ${videos.length} videos.`}
       { videos.map(video =>
-        <ListItem
+        (<ListItem
           id={video.id.videoId}
           video={video}
           clickHandler={clickHandler}
-        />
-      )}
+        />))}
     </div>
-  )
+  );
 };
 
 export default List;

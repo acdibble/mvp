@@ -1,96 +1,101 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import List from './components/List.jsx';
 import axios from 'axios';
+
+import { Button, FormControl, FormGroup, Navbar } from 'react-bootstrap';
+
+import List from './components/List.jsx';
 import VideoPlayer from './components/VideoPlayer.jsx';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       videos: [],
-      currentVideo: null,
-      searchQuery: 'Bob Seger',
+      searchQuery: '',
       selected: null,
       addById: '',
       globalQueue: [
-        
+
       ],
       playing: {
-        'id': '-xKM3mGt2pE',
-        'title': 'a-ha - Take On Me [ Live From MTV Unplugged, Giske / 2017 ]',
-        'turl': 'https://i.ytimg.com/vi/O3rXmViAcHc/default.jpg'
+        id: '-xKM3mGt2pE',
+        title: 'a-ha - Take On Me [ Live From MTV Unplugged, Giske / 2017 ]',
+        turl: 'https://i.ytimg.com/vi/O3rXmViAcHc/default.jpg',
       },
-      url: 'https://www.youtube.com/embed/-xKM3mGt2pE'
-    }
+      url: 'https://www.youtube.com/embed/-xKM3mGt2pE',
+    };
+
+    this.handleEnd = this.handleEnd.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.enterKeyHandler = this.enterKeyHandler.bind(this);
+    this.addToQueue = this.addToQueue.bind(this);
+    this.fetchVideos = this.fetchVideos.bind(this);
+    this.videoEntryClickHandler = this.videoEntryClickHandler.bind(this);
   }
 
   componentDidMount() {
     this.fetchVideos();
-    this.setState({
-      searchQuery: ''
-    })
   }
-  
+
   fetchVideos() {
     if (this.state.searchQuery !== '') {
       axios.get('/search', {
         params: {
-          q: this.state.searchQuery
-        }
+          q: this.state.searchQuery,
+        },
       })
         .then((res) => {
           this.setState({
-            videos: res.data.items
+            videos: res.data.items,
           });
         });
-      }
     }
-    
+  }
+
   addToQueue() {
     if (this.state.addById !== '') {
       axios.post('/add', { video: this.state.selected })
-      .then(res => {
-        if (res.data === 'already exists') {
-          alert('This song cannot be played as it already has been played recently');
-        } else {
-          if (this.state.playing === null) {
-            const url = `https://www.youtube.com/embed/${res.data.id}`
+        .then((res) => {
+          if (res.data === 'already exists') {
+            window.alert('This song cannot be played as it already has been played recently');
+          } else if (this.state.playing === null) {
+            const url = `https://www.youtube.com/embed/${res.data.id}`;
             this.setState({
-                playing: res.data,
-                url: url
-              });
-            } else {
-              const queue = this.state.globalQueue.slice();
-              queue.push(res.data);
-              this.setState({
-                globalQueue: queue
-              });
-            }
+              playing: res.data,
+              url,
+            });
+          } else {
+            const queue = this.state.globalQueue.slice();
+            queue.push(res.data);
+            this.setState({
+              globalQueue: queue,
+            });
           }
-      });
+        });
     }
   }
-  
+
   handleChange(e) {
     this.setState({
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   }
 
   videoEntryClickHandler(e) {
+    e.preventDefault();
     let selected;
 
-    for (const video of this.state.videos) {
-       if (video.id.videoId === e.target.id) {
+    this.state.videos.forEach((video) => {
+      if (video.id.videoId === e.target.id) {
         selected = video;
       }
-    }
+    });
 
     this.setState({
-      selected: selected,
-      addById: e.target.id
-    })
+      selected,
+      addById: e.target.id,
+    });
   }
 
   enterKeyHandler(e) {
@@ -108,32 +113,58 @@ class App extends React.Component {
     if (!queue.length) {
       this.setState({
         playing: null,
-        url: null
+        url: null,
       });
     } else {
       const playing = queue.pop();
       this.setState({
-        playing: playing,
+        playing,
         url: `https://www.youtube.com/embed/${playing.id.videoId}`,
-        globalQueue: queue
-      })
+        globalQueue: queue,
+      });
     }
   }
 
-  render () {
+  render() {
     const styles = {
       queueList: {
-        'float': 'right'
+        float: 'right',
       },
-    }
+    };
 
     return (
       <div>
-        <h1>Welcome to uMTV</h1>
+        <Navbar>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <a>Welcome to uMTV</a>
+            </Navbar.Brand>
+          </Navbar.Header>
+          <Navbar.Collapse>
+            <Navbar.Form pullRight name="searchBox">
+              <FormGroup>
+                <FormControl
+                  type="text"
+                  placeholder="Search"
+                  name="searchQuery"
+                  value={this.state.searchQuery}
+                  onChange={this.handleChange}
+                  onKeyPress={this.enterKeyHandler}
+                />
+              </FormGroup>{' '}
+              <Button
+                type="submit"
+                onClick={this.fetchVideos}
+              >
+                Submit
+              </Button>
+            </Navbar.Form>
+          </Navbar.Collapse>
+        </Navbar>
         <div name="videoplayer">
           <VideoPlayer
             url={this.state.url}
-            end={this.handleEnd.bind(this)}
+            end={this.handleEnd}
           />
         </div>
         <div name="addByIdBox">
@@ -141,19 +172,19 @@ class App extends React.Component {
             type="text"
             name="addById"
             value={this.state.addById}
-            onChange={this.handleChange.bind(this)}
-            onKeyPress={this.enterKeyHandler.bind(this)}
+            onChange={this.handleChange}
+            onKeyPress={this.enterKeyHandler}
             disabled
           />
           <button
-            onClick={this.addToQueue.bind(this)}
+            onClick={this.addToQueue}
           >
             Add Video By ID
           </button>
         </div>
         <div
-        name="queueList"
-        style={styles.queueList}
+          name="queueList"
+          style={styles.queueList}
         >
           <List
             videos={this.state.globalQueue}
@@ -161,29 +192,16 @@ class App extends React.Component {
             count
           />
         </div>
-        <div name="searchBox">
-          <input
-            type="text"
-            name="searchQuery"
-            value={this.state.searchQuery}
-            onChange={this.handleChange.bind(this)}
-            onKeyPress={this.enterKeyHandler.bind(this)}
-          />
-          <button
-            onClick={this.fetchVideos.bind(this)}
-          >
-            Search
-          </button>
-        </div>
+
         <div name="searchList">
           <List
             videos={this.state.videos}
-            clickHandler={this.videoEntryClickHandler.bind(this)}
+            clickHandler={this.videoEntryClickHandler}
           />
         </div>
       </div>
     );
   }
-};
+}
 
 ReactDOM.render(<App />, document.getElementById('app'));
