@@ -1,5 +1,4 @@
 const axios = require('axios');
-const config = require('../config');
 
 function search(query) {
   return axios.get('https://www.googleapis.com/youtube/v3/search', {
@@ -9,7 +8,7 @@ function search(query) {
       q: query,
       type: 'video',
       videoEmbeddable: true,
-      key: config.YOUTUBE_API_KEY,
+      key: process.env.YOUTUBE_API_KEY,
     },
   });
 }

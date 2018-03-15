@@ -6,7 +6,6 @@ const VideoPlayer = props => (
     {props.url ? (
       <ReactPlayer
         url={props.url}
-        onPlay={console.log('play')}
         onEnded={props.end}
         playing
       />

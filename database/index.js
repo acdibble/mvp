@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
-const config = require('../config');
 
-mongoose.connect(config.MLAB_URI);
+mongoose.connect(process.env.MLAB_URI);
 
 const videoSchema = mongoose.Schema({
   id: { type: String, required: true, unique: true },

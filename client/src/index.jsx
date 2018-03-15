@@ -175,19 +175,21 @@ class App extends React.Component {
             </Col>
             <Col xs={6} md={4}>
               <div name="addByIdBox">
-                <input
-                  type="text"
-                  name="addById"
-                  value={this.state.addById}
-                  onChange={this.handleChange}
-                  onKeyPress={this.enterKeyHandler}
-                  disabled
-                />
-                <button
+                <FormGroup>
+                  <FormControl
+                    placeholder="Click Video Title to Add ID"
+                    type="text"
+                    name="addById"
+                    value={this.state.addById}
+                    onChange={this.handleChange}
+                    disabled
+                  />
+                </FormGroup>
+                <Button
                   onClick={this.addToQueue}
                 >
-                  Add Video By ID
-                </button>
+                  Add Video
+                </Button>
               </div>
               <div name="searchList">
                 <List

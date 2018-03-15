@@ -5,7 +5,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "react-dev": "webpack -d --watch",
-    "server-dev": "nodemon server/index.js"
+    "server-dev": "nodemon -r dotenv/config server/index.js"
   },
   "author": "Andrew Dibble",
   "license": "ISC",
@@ -24,6 +24,7 @@
     "antd": "^3.3.0",
     "axios": "^0.17.1",
     "body-parser": "^1.17.0",
+    "dotenv": "^5.0.1",
     "express": "^4.15.0",
     "mongoose": "^4.9.6",
     "react": "^15.4.2",
