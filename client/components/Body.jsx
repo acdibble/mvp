@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import YouTubePlayer from '../YouTubePlayer';
+import YouTubePlayer from '../youtube/YouTubePlayer';
 
-class App extends Component {
+class Body extends Component {
   constructor() {
     super();
     this.player = new YouTubePlayer('iframe');
@@ -20,8 +20,9 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <div id="iframe">Howdy.</div>
+        <br />
         <input type="button" value="Start" onClick={this.startVideo} />
         <input type="button" value="Player" onClick={this.describePlayer} />
       </div>
@@ -29,4 +30,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Body;
