@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Navbar,
   FormGroup,
@@ -7,74 +8,58 @@ import {
   InputGroup,
 } from 'react-bootstrap';
 
-class Header extends Component {
-  constructor() {
-    super();
+const Header = (props) => {
+  const {
+    query,
+    handleChange,
+    search,
+  } = props;
 
-    this.state = {
-      search: '',
-    };
-
-    this.search = this.search.bind(this);
-    this.handleEnter = this.handleEnter.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-  }
-
-  handleChange({ target: { name, value } }) {
-    this.setState({
-      [name]: value,
-    });
-  }
-
-  handleEnter({ key }) {
+  const handleEnter = ({ key }) => {
     if (key === 'Enter') {
-      this.search();
+      search();
     }
-  }
+  };
 
-  search() {
-    this.setState({
-      search: '',
-    });
-  }
+  return (
+    <Navbar>
+      <Navbar.Header>
+        <Navbar.Brand>
+          Welcome to uMTV
+        </Navbar.Brand>
+      </Navbar.Header>
+      <Navbar.Collapse>
+        <Navbar.Form pullRight name="searchBox">
+          <InputGroup>
+            <FormGroup>
+              <FormControl
+                type="text"
+                placeholder="Search"
+                name="query"
+                value={query}
+                onChange={handleChange}
+                onKeyUp={handleEnter}
+              />
+            </FormGroup>
+            <InputGroup.Button>
+              <Button
+                type="submit"
+                onClick={search}
+              >
+                Submit
+              </Button>
+            </InputGroup.Button>
+          </InputGroup>
+        </Navbar.Form>
+      </Navbar.Collapse>
+    </Navbar>
+  );
+};
 
-  render() {
-    const { search } = this.state;
-
-    return (
-      <Navbar>
-        <Navbar.Header>
-          <Navbar.Brand>
-            Welcome to uMTV
-          </Navbar.Brand>
-        </Navbar.Header>
-        <Navbar.Collapse>
-          <Navbar.Form pullRight name="searchBox">
-            <InputGroup>
-              <FormGroup>
-                <FormControl
-                  type="text"
-                  placeholder="Search"
-                  name="search"
-                  value={search}
-                  onChange={this.handleChange}
-                  onKeyUp={this.handleEnter}
-                />
-              </FormGroup>
-              <InputGroup.Button>
-                <Button
-                  type="submit"
-                  onClick={this.search}
-                >
-                  Submit
-                </Button>
-              </InputGroup.Button>
-            </InputGroup>
-          </Navbar.Form>
-        </Navbar.Collapse>
-      </Navbar>
-    );
-  }
-}
+Header.propTypes = {
+  query: PropTypes.string.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  search: PropTypes.func.isRequired,
+};
 
 export default Header;
