@@ -1,15 +1,14 @@
-class VideoQueue {
-  constructor() {
-    this.storage = [];
-  }
+const VideoQueue = () => {
+  const storage = [];
 
-  nextVideo() {
-    return this.storage.shift();
-  }
-
-  addVideo(video) {
-    this.storage.push(video);
-  }
-}
+  return {
+    nextVideo() {
+      return storage.shift();
+    },
+    addVideo(video) {
+      storage.push(video);
+    },
+  };
+};
 
 export default VideoQueue;
