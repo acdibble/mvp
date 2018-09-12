@@ -8,16 +8,15 @@ import Body from './components/Body';
 const socket = io();
 
 class App extends Component {
-  static enqueue(video) {
-    socket.emit('video:add', video || 'hi');
-  }
-
   constructor() {
     super();
 
     this.state = {
       query: '',
-      videoId: '',
+      currentVid: '',
+      queue: [],
+      loggedIn: true,
+      results: [],
     };
 
     this.search = this.search.bind(this);
@@ -25,7 +24,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    socket.on('init', videoId => this.setState({ videoId }));
+    socket.on('init', ({ currentVid, queue }) => this.setState({ currentVid, queue }));
     socket.on('video:response', res => console.log(res));
   }
 
@@ -40,19 +39,30 @@ class App extends Component {
     if (query) {
       fetch(`/youtube/search?query=${query}`)
         .then(data => data.json())
-        .then(res => console.log(res));
+        .then(results => this.setState({ results }));
     }
   }
 
   render() {
-    const { query, videoId } = this.state;
+    const {
+      query,
+      currentVid,
+      queue,
+      loggedIn,
+      results,
+    } = this.state;
     return (
       <div>
-        <Header query={query} handleChange={this.handleChange} search={this.search} />
-        <Body videoId={videoId} enqueue={App.enqueue} />
+        <Header
+          query={query}
+          handleChange={this.handleChange}
+          search={this.search}
+          loggedIn={loggedIn}
+        />
+        <Body videoId={currentVid} queue={queue} results={results} />
       </div>
     );
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(<App style={{ body: { margin: '0' } }} />, document.getElementById('app'));

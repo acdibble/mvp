@@ -18,14 +18,19 @@ app.use(bodyParser.json());
 app.get('/youtube/search', (req, res) => {
   const { query } = req.query;
   youtube.search(query)
-    .then(({ data }) => res.json(data));
+    .then(({ data: { items } }) => {
+      res.json(items.map(item => ({
+        id: item.id.videoId,
+        title: item.snippet.title,
+        thumbnail: item.snippet.thumbnails.default.url,
+      })));
+    });
 });
 
 io.on('connection', (socket) => {
   init(socket);
-  socket.emit('init', 'BFRVegQZ_r0');
 
-  socket.on('video:add', addVideo(socket));
+  socket.on('video:add', addVideo(io, socket));
 
   socket.on('disconnect', end(socket));
 });

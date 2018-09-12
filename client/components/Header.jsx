@@ -13,6 +13,7 @@ const Header = (props) => {
     query,
     handleChange,
     search,
+    loggedIn,
   } = props;
 
   const handleEnter = ({ key }) => {
@@ -30,26 +31,33 @@ const Header = (props) => {
       </Navbar.Header>
       <Navbar.Collapse>
         <Navbar.Form pullRight name="searchBox">
-          <InputGroup>
-            <FormGroup>
-              <FormControl
-                type="text"
-                placeholder="Search"
-                name="query"
-                value={query}
-                onChange={handleChange}
-                onKeyUp={handleEnter}
-              />
-            </FormGroup>
-            <InputGroup.Button>
-              <Button
-                type="submit"
-                onClick={search}
-              >
+          {loggedIn
+            ? (
+              <InputGroup>
+                <FormGroup>
+                  <FormControl
+                    type="text"
+                    placeholder="Search"
+                    name="query"
+                    value={query}
+                    onChange={handleChange}
+                    onKeyUp={handleEnter}
+                  />
+                </FormGroup>
+                <InputGroup.Button>
+                  <Button
+                    type="submit"
+                    onClick={search}
+                  >
                 Submit
-              </Button>
-            </InputGroup.Button>
-          </InputGroup>
+                  </Button>
+                </InputGroup.Button>
+              </InputGroup>
+            ) : (
+              <InputGroup>
+                <Button>Login</Button>
+              </InputGroup>
+            )}
         </Navbar.Form>
       </Navbar.Collapse>
     </Navbar>
@@ -60,6 +68,7 @@ Header.propTypes = {
   query: PropTypes.string.isRequired,
   handleChange: PropTypes.func.isRequired,
   search: PropTypes.func.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
 };
 
 export default Header;

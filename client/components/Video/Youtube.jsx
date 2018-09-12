@@ -42,7 +42,6 @@ class Youtube extends Component {
   }
 
   render() {
-    const { enqueue } = this.props;
     return (
       <div>
         <div id="iframe" />
@@ -53,7 +52,6 @@ class Youtube extends Component {
           <Button onClick={this.stopVideo}>Stop</Button>
           <Button onClick={this.getPlaylist}>Playlist</Button>
           <Button onClick={this.describePlayer}>Player</Button>
-          <Button onClick={enqueue}>Player</Button>
         </ButtonGroup>
       </div>
     );
@@ -62,7 +60,6 @@ class Youtube extends Component {
 
 Youtube.propTypes = {
   videoId: PropTypes.string.isRequired,
-  enqueue: PropTypes.func.isRequired,
 };
 
 export default Youtube;
